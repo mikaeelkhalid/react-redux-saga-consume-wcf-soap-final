@@ -1,25 +1,59 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+import Dashboard from './pages/Dashboard';
+import Create from './pages/Create';
+import CustomerList from './pages/CustomerList';
+import PageNotFound from './pages/PageNotFound';
+import Update from './pages/Update';
+
+import { createTheme, ThemeProvider } from '@material-ui/core';
+import { deepPurple, purple } from '@material-ui/core/colors';
+
+import Layout from './components/layout/Layout';
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const theme = createTheme({
+  palette: {
+    primary: deepPurple,
+    secondary: purple,
+  },
+  typography: {
+    fontFamily: 'Quicksand',
+    fontWeightLight: 400,
+    fontWeightRegular: 500,
+    fontWeightMedium: 600,
+    fontWeightBold: 700,
+  },
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <ToastContainer />
+      <Router>
+        <Layout>
+          <Switch>
+            <Route exact path='/'>
+              <Dashboard />
+            </Route>
+            <Route exact path='/create'>
+              <Create />
+            </Route>
+            <Route exact path='/update/:id'>
+              <Update />
+            </Route>
+            <Route exact path='/customers'>
+              <CustomerList />
+            </Route>
+            <Route path='*'>
+              <PageNotFound />
+            </Route>
+          </Switch>
+        </Layout>
+      </Router>
+    </ThemeProvider>
   );
 }
 
